@@ -1,0 +1,42 @@
+[
+  {
+    "Id": "T001",
+    "Timestamp": "2026-10-01T13:30:00Z",
+    "Symbol": "MSFT",
+    "Side": "Buy",
+    "Price": 525.75,
+    "Qty": 100
+  },
+  {
+    "Id": "T002",
+    "Timestamp": "2026-10-01T13:35:00Z",
+    "Symbol": "AAPL",
+    "Side": "Sell",
+    "Price": 245.50,
+    "Qty": 50
+  },
+  {
+    "Id": "T003",
+    "Timestamp": "2026-10-01T13:40:00Z",
+    "Symbol": "MSFT",
+    "Side": "Buy",
+    "Price": 526.10,
+    "Qty": 75
+  },
+  {
+    "Id": "T004",
+    "Timestamp": "2026-10-01T13:45:00Z",
+    "Symbol": "NVDA",
+    "Side": "Buy",
+    "Price": 180.25,
+    "Qty": 120
+  },
+  {
+    "Id": "T005",
+    "Timestamp": "2026-10-01T13:50:00Z",
+    "Symbol": "AAPL",
+    "Side": "Sell",
+    "Price": 246.00,
+    "Qty": 80
+  }
+]
