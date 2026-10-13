@@ -6,7 +6,7 @@ public class BatchSummarizer
 {
     public static BatchSummary Summarize(IReadOnlyList<TradeEvent> events, DateTimeOffset processedAt)
     {
-        var symbols = 
+        var symbols =
             events
                 .GroupBy(e => e.Symbol)
                 .Select(group =>
@@ -19,17 +19,24 @@ public class BatchSummarizer
 
                     var totalValue = group.Sum(e => e.Price * e.Qty);
 
+                    if (totalQty == 0)
+                    {
+                        throw new InvalidOperationException($"Cannot calculate VWAP for symbol '{group.Key}' because total quantity is zero");
+                    }
+
+                    var vwap = Math.Round(totalValue / totalQty, 4);
+
                     return new SymbolSummary(
-                        group.Key,
-                        group.Count(),
-                        buyQty,
-                        sellQty,
-                        totalValue/totalQty
+                        Symbol: group.Key,
+                        TradeCount: group.Count(),
+                        BuyQty: buyQty,
+                        SellQty: sellQty,
+                        Vwap: vwap
                     );
                 })
                 .OrderBy(s => s.Symbol)
                 .ToList();
-        
+
         return new BatchSummary(
             Guid.NewGuid(),
             processedAt,
