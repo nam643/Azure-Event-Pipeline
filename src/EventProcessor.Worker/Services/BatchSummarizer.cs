@@ -4,7 +4,7 @@ namespace EventProcessor.Worker.Services;
 
 public class BatchSummarizer
 {
-    public static BatchSummary Summarize(IReadOnlyList<TradeEvent> events, DateTimeOffset processedAt)
+    public BatchSummary Summarize(IReadOnlyList<TradeEvent> events, DateTimeOffset processedAt)
     {
         var symbols =
             events
