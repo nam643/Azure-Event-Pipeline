@@ -45,8 +45,7 @@ public sealed class JsonFileEventSource : IEventSource // sealed: common when do
         {
             throw new InvalidOperationException($"No events found in '{_path}'.");
         }
-
-        _events = events;
+        
         return events;
     }
 
