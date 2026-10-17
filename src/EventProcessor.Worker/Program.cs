@@ -13,5 +13,7 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
+builder.Services.AddSingleton<IBatchSink, LoggingBatchSink>();
+
 var host = builder.Build();
 host.Run();
