@@ -1,6 +1,6 @@
 using EventProcessor.Worker;
 using EventProcessor.Worker.Services;
-using EventProcessor.Worker.Options;
+using EventProcessor.Worker.Configuration;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();

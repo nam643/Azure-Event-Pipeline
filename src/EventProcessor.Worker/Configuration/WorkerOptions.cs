@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EventProcessor.Worker.Options;
+namespace EventProcessor.Worker.Configuration;
 
 public class WorkerOptions
 {

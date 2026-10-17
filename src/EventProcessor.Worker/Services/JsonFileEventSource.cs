@@ -2,6 +2,7 @@ namespace EventProcessor.Worker.Services;
 using EventProcessor.Worker.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using EventProcessor.Worker.Configuration;
 
 public sealed class JsonFileEventSource : IEventSource // sealed: common when don't expect inheritance
 {

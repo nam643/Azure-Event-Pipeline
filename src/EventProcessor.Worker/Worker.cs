@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using EventProcessor.Worker.Options;
+using EventProcessor.Worker.Configuration;
 using EventProcessor.Worker.Services;
 
 
@@ -38,7 +38,7 @@ public class Worker(ILogger<Worker> logger,
                             symbol.SellQty,
                             symbol.Vwap
                         );
-                    }    
+                    }
                 }
                 catch(Exception ex) when (ex is not OperationCanceledException)
                 {
