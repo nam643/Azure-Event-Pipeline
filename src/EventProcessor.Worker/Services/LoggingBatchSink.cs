@@ -4,7 +4,7 @@ namespace EventProcessor.Worker.Services;
 
 public class LoggingBatchSink(ILogger<LoggingBatchSink> logger) : IBatchSink
 {
-    ILogger<LoggingBatchSink> _logger = logger;
+    private readonly ILogger<LoggingBatchSink> _logger = logger;
 
     public Task WriteAsync(
         BatchSummary summary,

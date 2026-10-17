@@ -15,5 +15,12 @@ builder.Services
 
 builder.Services.AddSingleton<IBatchSink, LoggingBatchSink>();
 
+builder.Services
+    .AddOptions<BlobStorageOptions>()
+    .Bind(builder.Configuration.GetSection
+        (BlobStorageOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
 var host = builder.Build();
 host.Run();
