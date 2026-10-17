@@ -1,6 +1,8 @@
+using Azure.Storage.Blobs;
 using EventProcessor.Worker;
 using EventProcessor.Worker.Services;
 using EventProcessor.Worker.Configuration;
+using Microsoft.Extensions.Options;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();
@@ -13,7 +15,7 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddSingleton<IBatchSink, LoggingBatchSink>();
+builder.Services.AddSingleton<IBatchSink, BlobBatchSink>();
 
 builder.Services
     .AddOptions<BlobStorageOptions>()
@@ -21,6 +23,15 @@ builder.Services
         (BlobStorageOptions.SectionName))
     .ValidateDataAnnotations()
     .ValidateOnStart();
+
+builder.Services.AddSingleton<BlobContainerClient>(
+    sp =>
+    {
+        var options = sp.GetRequiredService<IOptions<BlobStorageOptions>>();
+
+        return new BlobContainerClient(options.Value.ConnectionString,options.Value.ContainerName);
+    }
+);
 
 var host = builder.Build();
 host.Run();
