@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>dotnet-EventProcessor.Worker-daecb0fd-9c04-4cb3-9477-9acdffa5fbb7</UserSecretsId>
@@ -10,8 +10,8 @@
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.21.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.30.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.20" />
-    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.20" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
