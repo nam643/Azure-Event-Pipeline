@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using EventProcessor.Worker.Configuration;
 using EventProcessor.Worker.Services;
+using EventProcessor.Worker.Models;
 
 
 namespace EventProcessor.Worker;
@@ -23,12 +24,22 @@ public class Worker(ILogger<Worker> logger,
         {
             while (!stoppingToken.IsCancellationRequested)
             {
+                _logger.LogInformation("Starting batch processing");
+                BatchSummary? summary = null;
                 try
                 {
+                    _logger.LogInformation("Getting next batch...");
                     var events = await _eventSource.GetNextBatchAsync(_options.BatchSize, stoppingToken);
 
-                    var summary = _summarizer.Summarize(events, DateTimeOffset.UtcNow);
+                    _logger.LogInformation("Received events");
+
+                    summary = _summarizer.Summarize(events, DateTimeOffset.UtcNow);
+
+                    _logger.LogInformation("Summary created");
+
                     await _batchSink.WriteAsync(summary,stoppingToken);
+
+                    _logger.LogInformation("Summary written");
                     _logger.LogInformation("BatchId={BatchId} EventCount={EventCount} SymbolCount={SymbolCount}", summary.BatchId, summary.EventCount, summary.Symbols.Count);
 
                     foreach (var symbol in summary.Symbols)
@@ -45,7 +56,7 @@ public class Worker(ILogger<Worker> logger,
                 }
                 catch(Exception ex) when (ex is not OperationCanceledException)
                 {
-                    _logger.LogError(ex, "Error while processing batch");
+                    _logger.LogError(ex, "Error processing BatchId={BatchId}", summary?.BatchId);
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(_options.IntervalSeconds), stoppingToken);

@@ -1,3 +1,4 @@
+using Azure.Storage.Blobs.Models;
 using System.Globalization;
 using System.Text.Json;
 using Azure.Storage.Blobs;
@@ -18,33 +19,53 @@ public sealed class BlobBatchSink(
         BatchSummary summary,
         CancellationToken cancellationToken)
     {
+        _logger.LogInformation("WriteAsync entered");
         if (!_containerCreated)
         {
+            _logger.LogInformation("Creating container...");
             await _containerClient.CreateIfNotExistsAsync(
                 cancellationToken : cancellationToken
             );
 
+            _logger.LogInformation("Container created");
+
             _containerCreated = true;
         }
 
-        string blobName = $"{summary.ProcessedAt.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture)}/" + $"{summary.BatchId}.json";
+        _logger.LogInformation("Building blob name");
+
+        string blobName = $"{summary.ProcessedAt:yyyy/MM/dd}/{summary.BatchId}.json";
 
         BlobClient blobClient = _containerClient.GetBlobClient(blobName);
+
+        _logger.LogInformation("Uploading blob");
 
         BinaryData data = BinaryData.FromObjectAsJson(
             summary,
             JsonOptions
         );
 
+        var options = new BlobUploadOptions
+        {
+            HttpHeaders = new BlobHttpHeaders
+            {
+                ContentType = "application/json"
+            }
+        };
+
         await blobClient.UploadAsync(
             data,
-            overwrite: true,
+            options,
             cancellationToken
         );
 
+        
+        _logger.LogInformation("Upload complete");
+
         _logger.LogInformation(
-            "Wrote blob {blobName}",
+            "Wrote blob {BlobName}",
             blobName
         );
+
     }
 }
