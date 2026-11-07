@@ -19,7 +19,6 @@ public sealed class BlobBatchSink(
         BatchSummary summary,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("WriteAsync entered");
         if (!_containerCreated)
         {
             _logger.LogInformation("Creating container...");
@@ -27,18 +26,14 @@ public sealed class BlobBatchSink(
                 cancellationToken : cancellationToken
             );
 
-            _logger.LogInformation("Container created");
-
             _containerCreated = true;
         }
 
-        _logger.LogInformation("Building blob name");
 
         string blobName = $"{summary.ProcessedAt:yyyy/MM/dd}/{summary.BatchId}.json";
 
         BlobClient blobClient = _containerClient.GetBlobClient(blobName);
 
-        _logger.LogInformation("Uploading blob");
 
         BinaryData data = BinaryData.FromObjectAsJson(
             summary,
@@ -58,9 +53,6 @@ public sealed class BlobBatchSink(
             options,
             cancellationToken
         );
-
-        
-        _logger.LogInformation("Upload complete");
 
         _logger.LogInformation(
             "Wrote blob {BlobName}",

@@ -24,22 +24,15 @@ public class Worker(ILogger<Worker> logger,
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Starting batch processing");
                 BatchSummary? summary = null;
                 try
                 {
-                    _logger.LogInformation("Getting next batch...");
                     var events = await _eventSource.GetNextBatchAsync(_options.BatchSize, stoppingToken);
-
-                    _logger.LogInformation("Received events");
 
                     summary = _summarizer.Summarize(events, DateTimeOffset.UtcNow);
 
-                    _logger.LogInformation("Summary created");
-
                     await _batchSink.WriteAsync(summary,stoppingToken);
 
-                    _logger.LogInformation("Summary written");
                     _logger.LogInformation("BatchId={BatchId} EventCount={EventCount} SymbolCount={SymbolCount}", summary.BatchId, summary.EventCount, summary.Symbols.Count);
 
                     foreach (var symbol in summary.Symbols)
