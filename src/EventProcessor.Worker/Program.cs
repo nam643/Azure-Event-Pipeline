@@ -4,6 +4,7 @@ using EventProcessor.Worker.Services;
 using EventProcessor.Worker.Configuration;
 using Microsoft.Extensions.Options;
 using Azure.Identity;
+using Azure.Core;
 
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();
@@ -37,17 +38,14 @@ builder.Services.AddSingleton<BlobContainerClient>(
                 options.Value.ContainerName
             );
 
-            var credential = new DefaultAzureCredential(
-                new DefaultAzureCredentialOptions
-                {
-                    ExcludeManagedIdentityCredential = true
-                }
-            );
+            TokenCredential credential = builder.Environment.IsDevelopment()
+                ? new AzureCliCredential()
+                : new ManagedIdentityCredential();
 
             return new BlobContainerClient(containerUri, credential);
         }
 
-        return new BlobContainerClient(options.Value.ConnectionString,options.Value.ContainerName);
+        return new BlobContainerClient(options.Value.ConnectionString, options.Value.ContainerName);
     }
 );
 

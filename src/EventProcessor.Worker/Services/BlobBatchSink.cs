@@ -21,16 +21,17 @@ public sealed class BlobBatchSink(
     {
         if (!_containerCreated)
         {
-            _logger.LogInformation("Creating container...");
             await _containerClient.CreateIfNotExistsAsync(
-                cancellationToken : cancellationToken
+                cancellationToken: cancellationToken
             );
 
             _containerCreated = true;
         }
 
 
-        string blobName = $"{summary.ProcessedAt:yyyy/MM/dd}/{summary.BatchId}.json";
+        var datePath = summary.ProcessedAt.ToString("yyyy/MM/dd", CultureInfo.InvariantCulture);
+
+        string blobName = $"{datePath}/{summary.BatchId}.json";
 
         BlobClient blobClient = _containerClient.GetBlobClient(blobName);
 

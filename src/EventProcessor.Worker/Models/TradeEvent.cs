@@ -1,4 +1,5 @@
 namespace EventProcessor.Worker.Models;
+
 public enum Side
 {
     Buy,

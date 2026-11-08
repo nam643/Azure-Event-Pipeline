@@ -1,4 +1,5 @@
 namespace EventProcessor.Worker.Services;
+
 using EventProcessor.Worker.Models; //this makes me see the TradeEvent.cs
 
 public interface IEventSource

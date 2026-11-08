@@ -31,7 +31,7 @@ public class Worker(ILogger<Worker> logger,
 
                     summary = _summarizer.Summarize(events, DateTimeOffset.UtcNow);
 
-                    await _batchSink.WriteAsync(summary,stoppingToken);
+                    await _batchSink.WriteAsync(summary, stoppingToken);
 
                     _logger.LogInformation("BatchId={BatchId} EventCount={EventCount} SymbolCount={SymbolCount}", summary.BatchId, summary.EventCount, summary.Symbols.Count);
 
@@ -47,7 +47,7 @@ public class Worker(ILogger<Worker> logger,
                         );
                     }
                 }
-                catch(Exception ex) when (ex is not OperationCanceledException)
+                catch (Exception ex) when (ex is not OperationCanceledException)
                 {
                     _logger.LogError(ex, "Error processing BatchId={BatchId}", summary?.BatchId);
                 }

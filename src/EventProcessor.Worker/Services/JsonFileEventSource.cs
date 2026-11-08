@@ -1,4 +1,5 @@
 namespace EventProcessor.Worker.Services;
+
 using EventProcessor.Worker.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
