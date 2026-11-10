@@ -1,0 +1,16 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.6.4">
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventProcessor.Worker\EventProcessor.Worker.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AspireUseCliBundle>true</AspireUseCliBundle>
+    <UserSecretsId>31cbc37f-2cdb-4d39-8a2e-58d9e50c15cf</UserSecretsId>
+  </PropertyGroup>
+
+</Project>

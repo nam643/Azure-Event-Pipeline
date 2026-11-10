@@ -19,4 +19,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventProcessor.ServiceDefaults\EventProcessor.ServiceDefaults.csproj" />
+  </ItemGroup>
 </Project>

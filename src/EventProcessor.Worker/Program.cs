@@ -7,6 +7,8 @@ using Azure.Identity;
 using Azure.Core;
 
 var builder = Host.CreateApplicationBuilder(args);
+
+builder.AddServiceDefaults();
 builder.Services.AddHostedService<Worker>();
 builder.Services.AddSingleton<IEventSource, JsonFileEventSource>();
 builder.Services.AddSingleton<BatchSummarizer>();
