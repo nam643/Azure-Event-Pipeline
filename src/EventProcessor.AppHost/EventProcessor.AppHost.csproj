@@ -1,7 +1,11 @@
-<Project Sdk="Aspire.AppHost.Sdk/13.6.4">
+<Project Sdk="Aspire.AppHost.Sdk/13.6.5">
 
   <ItemGroup>
     <ProjectReference Include="..\EventProcessor.Worker\EventProcessor.Worker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Azure.Storage" Version="13.6.5" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -10,6 +14,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AspireUseCliBundle>true</AspireUseCliBundle>
+    <AspireCliPath>/home/haina/.aspire/bin/aspire</AspireCliPath>
     <UserSecretsId>31cbc37f-2cdb-4d39-8a2e-58d9e50c15cf</UserSecretsId>
   </PropertyGroup>
 

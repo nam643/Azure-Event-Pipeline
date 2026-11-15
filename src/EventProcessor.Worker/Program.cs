@@ -33,6 +33,19 @@ builder.Services.AddSingleton<BlobContainerClient>(
     {
         var options = sp.GetRequiredService<IOptions<BlobStorageOptions>>();
 
+        //Azure connection string
+        var blobsConnectionString = builder.Configuration.GetConnectionString("blobs");
+
+        if (!string.IsNullOrWhiteSpace(blobsConnectionString))
+        {
+            var parts = blobsConnectionString.Split(";ContainerName=");
+            return new BlobContainerClient(
+                parts[0],
+                parts[1]
+            );
+        }
+
+        // real azure account
         if (!string.IsNullOrWhiteSpace(options.Value.AccountUri))
         {
             var containerUri = new Uri(
