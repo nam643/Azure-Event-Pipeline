@@ -5,6 +5,7 @@ using EventProcessor.Worker.Configuration;
 using Microsoft.Extensions.Options;
 using Azure.Identity;
 using Azure.Core;
+using System.Data.Common;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -38,11 +39,39 @@ builder.Services.AddSingleton<BlobContainerClient>(
 
         if (!string.IsNullOrWhiteSpace(blobsConnectionString))
         {
-            var parts = blobsConnectionString.Split(";ContainerName=");
+            var csBuilder = new DbConnectionStringBuilder
+            {
+                ConnectionString = blobsConnectionString
+            };
+
+            if (!csBuilder.TryGetValue("ContainerName", out var containerNameValue))
+            {
+                throw new InvalidOperationException("ContainerName missing from Aspire blob configuration");
+            }
+
+            string containerName = containerNameValue.ToString()!;
+
+            // csBuilder.Remove("ContainerName");
+
+            // Console.WriteLine("=== RAW ===");
+            // Console.WriteLine(blobsConnectionString);
+
+            // Console.WriteLine("=== PARSED ===");
+            // Console.WriteLine(csBuilder.ConnectionString);
+
+            // Console.WriteLine("=== CONTAINER ===");
+            // Console.WriteLine(containerName);
+
+            // return new BlobContainerClient(csBuilder.ConnectionString, containerName);
+
+            string storageConnectionString = blobsConnectionString.Replace(
+                                            $";ContainerName={containerName}",
+                                            string.Empty,
+                                            StringComparison.OrdinalIgnoreCase);
+
             return new BlobContainerClient(
-                parts[0],
-                parts[1]
-            );
+                storageConnectionString,
+                containerName);
         }
 
         // real azure account
@@ -65,4 +94,5 @@ builder.Services.AddSingleton<BlobContainerClient>(
 );
 
 var host = builder.Build();
+
 host.Run();

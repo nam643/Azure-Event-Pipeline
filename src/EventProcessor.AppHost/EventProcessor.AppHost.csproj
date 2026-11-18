@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventProcessor.Worker\EventProcessor.Worker.csproj" />
+    <ProjectReference Include="..\EventProcessor.StatsApi\EventProcessor.StatsApi.csproj" />
   </ItemGroup>
 
   <ItemGroup>

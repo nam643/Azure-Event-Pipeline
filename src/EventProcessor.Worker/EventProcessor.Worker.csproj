@@ -23,5 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EventProcessor.ServiceDefaults\EventProcessor.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\EventProcessor.Contracts\EventProcessor.Contracts.csproj" />
   </ItemGroup>
 </Project>
