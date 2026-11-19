@@ -1,4 +1,5 @@
-using EventProcessor.Worker.Models;
+using EventProcessor.Contracts;
+
 
 namespace EventProcessor.Worker.Services;
 

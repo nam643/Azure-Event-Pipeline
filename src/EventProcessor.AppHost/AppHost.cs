@@ -4,6 +4,7 @@ var storage = builder.AddAzureStorage("storage").RunAsEmulator();
 
 var blobs = storage.AddBlobContainer("blobs", "batch-summaries"); // resource blob
 
+
 builder.AddProject<Projects.EventProcessor_Worker>("worker")
                                                 .WithReference(blobs)
                                                 .WaitFor(blobs);

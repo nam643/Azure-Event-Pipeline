@@ -2,7 +2,7 @@ using Azure.Storage.Blobs.Models;
 using System.Globalization;
 using System.Text.Json;
 using Azure.Storage.Blobs;
-using EventProcessor.Worker.Models;
+using EventProcessor.Contracts;
 
 namespace EventProcessor.Worker.Services;
 
@@ -11,7 +11,6 @@ public sealed class BlobBatchSink(
     ILogger<BlobBatchSink> logger) : IBatchSink
 {
     private readonly BlobContainerClient _containerClient = containerClient;
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
     private bool _containerCreated;
     private readonly ILogger<BlobBatchSink> _logger = logger;
 
@@ -38,7 +37,7 @@ public sealed class BlobBatchSink(
 
         BinaryData data = BinaryData.FromObjectAsJson(
             summary,
-            JsonOptions
+            JsonSettings.Default
         );
 
         var options = new BlobUploadOptions

@@ -1,4 +1,4 @@
-namespace EventProcessor.Worker.Models;
+namespace EventProcessor.Contracts;
 
 public record SymbolSummary(
     string Symbol,

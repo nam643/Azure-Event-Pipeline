@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using EventProcessor.Worker.Configuration;
 using EventProcessor.Worker.Services;
-using EventProcessor.Worker.Models;
+using EventProcessor.Contracts;
 
 
 namespace EventProcessor.Worker;

@@ -51,19 +51,6 @@ builder.Services.AddSingleton<BlobContainerClient>(
 
             string containerName = containerNameValue.ToString()!;
 
-            // csBuilder.Remove("ContainerName");
-
-            // Console.WriteLine("=== RAW ===");
-            // Console.WriteLine(blobsConnectionString);
-
-            // Console.WriteLine("=== PARSED ===");
-            // Console.WriteLine(csBuilder.ConnectionString);
-
-            // Console.WriteLine("=== CONTAINER ===");
-            // Console.WriteLine(containerName);
-
-            // return new BlobContainerClient(csBuilder.ConnectionString, containerName);
-
             string storageConnectionString = blobsConnectionString.Replace(
                                             $";ContainerName={containerName}",
                                             string.Empty,
