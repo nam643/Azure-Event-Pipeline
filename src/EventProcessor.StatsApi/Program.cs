@@ -12,60 +12,11 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 
-// app.MapGet("/stats", async (
-//     BlobContainerClient container,
-//     CancellationToken cancellationToken) =>
-// {
-//     var summaries = new List<BatchSummary>();
-
-//     await foreach(var blob in container.GetBlobsAsync(cancellationToken : cancellationToken))
-//     {
-//         var blobClient = container.GetBlobClient(blob.Name);
-
-//         var response = await blobClient.DownloadContentAsync(cancellationToken);
-
-//         var summary = JsonSerializer.Deserialize<BatchSummary>(response.Value.Content.ToString());
-
-//         if(summary is not null)
-//         {
-//             summaries.Add(summary);
-//         }
-//     }
-
-//     return Results.Ok(summaries);
-// });
-
-// app.MapGet("/stats", async (
-//     BlobContainerClient container,
-//     CancellationToken cancellationToken) =>
-// {
-//     var results = new List<object>();
-
-//     await foreach (var blob in container.GetBlobsAsync(
-//         cancellationToken: cancellationToken))
-//     {
-//         var blobClient = container.GetBlobClient(blob.Name);
-
-//         var response =
-//             await blobClient.DownloadContentAsync(
-//                 cancellationToken);
-
-//         results.Add(new
-//         {
-//             BlobName = blob.Name,
-//             Json = response.Value.Content.ToString()
-//         });
-//     }
-
-//     return Results.Ok(results);
-// });
-
 app.MapGet("/stats", async (
     BlobContainerClient container,
     CancellationToken cancellationToken) =>
 {
     var summaries = new List<BatchSummary>();
-
     await foreach (var blob in container.GetBlobsAsync(
         cancellationToken: cancellationToken))
     {
@@ -78,13 +29,39 @@ app.MapGet("/stats", async (
 
         var summary = response.Value.Content.ToObjectFromJson<BatchSummary>(JsonSettings.Default);
 
+
         if (summary is not null)
         {
             summaries.Add(summary);
         }
     }
 
-    return Results.Ok(summaries);
+    var batchCount =        summaries.Count;
+    var eventCount =        summaries.Sum(s => s.EventCount);
+    var allSymbols =        summaries.SelectMany(s=>s.Symbols);
+    var groupedSymbols =    allSymbols.GroupBy(s=>s.Symbol);
+
+    var aggregatedSymbols =
+            groupedSymbols.Select(g =>
+            {
+                var totalQuantity = g.Sum(s => s.BuyQty + s.SellQty);
+                var totalValue = g.Sum(s => s.Vwap * (s.BuyQty + s.SellQty));
+
+                var vwap = totalQuantity == 0 ? 0 : totalValue / totalQuantity;
+
+                return new SymbolSummary(
+                    g.Key,
+                    g.Sum(s => s.TradeCount),
+                    g.Sum(s => s.BuyQty),
+                    g.Sum(s => s.SellQty),
+                    Math.Round(vwap,2)
+                );
+            });
+    // return Results.Ok(summaries);
+
+    return Results.Ok(
+        new StatsResponse(batchCount, eventCount, [.. aggregatedSymbols])
+    );
 });
 
 app.Run();
