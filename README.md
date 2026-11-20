@@ -8,7 +8,6 @@ I built it to learn the stack used day to day on Azure Core, in three phases tha
 2. **Azure SDK for .NET**: per-batch summaries uploaded with `Azure.Storage.Blobs`, authenticated with Azure identity instead of secrets.
 3. **Aspire**: an AppHost that runs the worker, a stats API and a local storage emulator together, with shared telemetry.
 
-The event model is a simplified version of a C++ matching engine I wrote earlier.
 
 ## Architecture
 
